@@ -1,12 +1,11 @@
-from typing import Any
 from TikTokApi import TikTokApi
 import supabase as sb
 import os
 from datetime import datetime
 
-sb_url: str = os.environ.get("SUPABASE_URL")
-sb_key: str = os.environ.get("SUPABASE_KEY")
-sb_cli: sb.Client = sb.create_client(sb_url, sb_key)
+sb_url = os.environ.get("SUPABASE_URL")
+sb_key = os.environ.get("SUPABASE_KEY")
+sb_cli = sb.create_client(sb_url, sb_key)
 
 
 # Should send all the items to the server... pretty poor workflow however
@@ -14,27 +13,26 @@ def parse_all_tts(entries: dict, limit: int) -> str:
     # Only need browsing history
     if entries["brows_hist"] is not None:
         # Find reference month, only using limited months of data
-        first_line: str = entries["brows_hist"].readline().strip().decode("UTF-8")
+        first_line = entries["brows_hist"].readline().strip().decode("UTF-8")
         entries["brows_hist"].seek(0)
-        ref_month: int = int(datetime.strptime(first_line, "Date: %Y-%m-%d %H:%M:%S").strftime("%m"))
+        ref_month = int(datetime.strptime(first_line, "Date: %Y-%m-%d %H:%M:%S").strftime("%m"))
 
         # Basic parsing of Date and ID + supabase and API calls
-        current_video: dict = {}
-        final_list: list = []
-        api_response: str = ""
-        for line in entries["brows_hist"]:
-            line: str = line.strip().decode("UTF-8")
+        current_video = {}
+        final_list = []
+        api_response = ""
+        for data in entries["brows_hist"]:
+            line = data.strip().decode("UTF-8")
             # Can check lines here using print:
             if line.startswith("Date:"):
-                datetime_obj: datetime = datetime.strptime(line, "Date: %Y-%m-%d %H:%M:%S")
-                current_video["date"]: str = datetime_obj.strftime("%Y-%m-%d %H:%M:%S")
+                datetime_obj = datetime.strptime(line, "Date: %Y-%m-%d %H:%M:%S")
+                current_video["date"] = datetime_obj.strftime("%Y-%m-%d %H:%M:%S")
             elif line.startswith("Link:"):
-                current_video["id"]: str = line.split("/")[-2].strip()
+                current_video["id"] = line.split("/")[-2].strip()
             elif line == "":
                 if "id" in current_video and "date" in current_video:
                     final_list.append(current_video.copy())
-
-                    check_limit: str = datetime.strptime(current_video["date"],
+                    check_limit = datetime.strptime(current_video["date"],
                                                     "%Y-%m-%d %H:%M:%S").strftime("%m")
                     if int(check_limit) + limit < ref_month:
                         api_response = str(sb_cli.table("tiktoks").upsert({"id": current_video["id"],

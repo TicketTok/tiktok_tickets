@@ -16,6 +16,7 @@ flask-wtf = "^1.1.1"
 pandas = "^2.0.1"
 supabase = "^1.0.3"
 tiktokapi = "^5.2.2"
+mypy = "^1.3.0"
 
 
 [build-system]
