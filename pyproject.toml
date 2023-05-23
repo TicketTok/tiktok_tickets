@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "tiktok-project"
+version = "0.1.0"
+description = ""
+authors = ["Your Name <ksharda@cmu.edu>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+flask = "^2.2.2"
+bs4 = "^0.0.1"
+black = "^23.1.0"
+flake8 = "^6.0.0"
+python-dotenv = "^1.0.0"
+flask-wtf = "^1.1.1"
+pandas = "^2.0.1"
+supabase = "^1.0.3"
+tiktokapi = "^5.2.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

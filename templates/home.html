@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{% block title %}Enter your TikTok Data{% endblock %}</h1>
+    <!-- https://nickjanetakis.com/blog/fix-missing-csrf-token-issues-with-flask If needed for debugging -->
+    <form method="POST" action="/" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.browsing.label }}
+            <br \>
+            {{ form.browsing() }}
+        </p>
+
+        {% if form.browsing.errors %}
+            <ul class="errors">
+                {% for error in form.browsing.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        <p>
+            {{ form.liked.label }}
+            <br \>
+            {{ form.liked() }}
+        </p>
+
+        {% if form.liked.errors %}
+            <ul class="errors">
+                {% for error in form.liked.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        <p>
+            {{ form.searches.label }}
+            <br \>
+            {{ form.searches() }}
+        </p>
+
+        {% if form.searches.errors %}
+            <ul class="errors">
+                {% for error in form.searches.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        <p>
+            {{ form.shared.label }}
+            <br \>
+            {{ form.shared() }}
+        </p>
+
+        {% if form.shared.errors %}
+            <ul class="errors">
+                {% for error in form.shared.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        <p>
+            {{ form.favorites.label }}
+            <br \>
+            {{ form.favorites() }}
+        </p>
+
+        {% if form.favorites.errors %}
+            <ul class="errors">
+                {% for error in form.favorites.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        <p>
+            <input type="submit" value="Done!">
+        </p>
+    </form>
+{% endblock %}
