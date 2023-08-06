@@ -7,9 +7,9 @@ import login_page
 from dotenv import load_dotenv
 import supabase as sb
 
-sb_url = os.environ.get("SUPABASE_URL")
-sb_key = os.environ.get("SUPABASE_KEY")
-sb_cli = sb.create_client(sb_url, sb_key)
+# sb_url = os.environ.get("SUPABASE_URL")
+# sb_key = os.environ.get("SUPABASE_KEY")
+# sb_cli = sb.create_client(sb_url, sb_key)
 
 load_dotenv(override=True)
 
@@ -31,8 +31,8 @@ def login() -> typing.ResponseReturnValue:
     if form.validate_on_submit():
         email = form.email.data
         # try:
-        result = sb_cli.auth.sign_in_with_otp({"email": email})
-        print(result)
+        # result = sb_cli.auth.sign_in_with_otp({"email": email})
+        # print(result)
         # except():e
         #     flash("Please wait a minute before requesting another magic link.", "error")
     return render_template("login.html", form=form)
