@@ -3,6 +3,7 @@ from flask_wtf import CSRFProtect
 import os
 import tt_data_collect
 from tt_parse_data import parse_all_tts
+from timeseries import find_hotspots
 import login_page
 from dotenv import load_dotenv
 import supabase as sb
@@ -19,11 +20,13 @@ app.config.update(dict(SECRET_KEY=csrf_secret_key))
 CSRFProtect(app)
 
 tiktok_data = {}
+dataframe_dict = {}
 
 
 @app.route('/login/authenticated/', methods=('GET', 'POST'))
 def get_token():
     print("lol error")
+
 
 @app.route('/login', methods=('GET', 'POST'))
 def login() -> typing.ResponseReturnValue:
@@ -48,11 +51,13 @@ def home() -> typing.ResponseReturnValue:  # put application's code here
                             "searched": form.searches.data,
                             "shared": form.shared.data,
                             "favorites": form.favorites.data})
-        print(parse_all_tts(tiktok_data, 5))
+        print(parse_all_tts(tiktok_data, dataframe_dict, 5))
+        find_hotspots(dataframe_dict["watch_history"])
     else:
         for field, errors in form.errors.items():
             for error in errors:
-                print(f"Field: {getattr(form, field).label.text} - Error: {error}")
+                print(
+                    f"Field: {getattr(form, field).label.text} - Error: {error}")
     return render_template("home.html", form=form)
 
 
