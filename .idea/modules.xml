@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/../servicenow/LLMIngestion/.idea/LLMIngestion.iml" filepath="$PROJECT_DIR$/../servicenow/LLMIngestion/.idea/LLMIngestion.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/tiktok-project.iml" filepath="$PROJECT_DIR$/.idea/tiktok-project.iml" />
     </modules>
   </component>

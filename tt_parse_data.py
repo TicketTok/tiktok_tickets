@@ -1,11 +1,13 @@
-from TikTokApi import TikTokApi
 import supabase as sb
 import os
 from datetime import datetime
+import pandas as pd
+import requests
 
 sb_url = os.environ.get("SUPABASE_URL")
 sb_key = os.environ.get("SUPABASE_KEY")
 sb_cli = sb.create_client(sb_url, sb_key)
+dataframe_dict = {}
 
 
 # Should send all the items to the server... pretty poor workflow however
@@ -26,24 +28,26 @@ def parse_all_tts(entries: dict, limit: int) -> str:
             # Can check lines here using print:
             if line.startswith("Date:"):
                 datetime_obj = datetime.strptime(line, "Date: %Y-%m-%d %H:%M:%S")
-                current_video["date"] = datetime_obj.strftime("%Y-%m-%d %H:%M:%S")
+                current_video["viewed_at"] = datetime_obj.strftime("%Y-%m-%d %H:%M:%S")
             elif line.startswith("Link:"):
                 current_video["id"] = line.split("/")[-2].strip()
+                # url = requests.head(line.split("Link: ")[1].strip(), allow_redirects=True)
+                # url_list.append(url.url)
             elif line == "":
-                if "id" in current_video and "date" in current_video:
+                if "id" in current_video and "viewed_at" in current_video:
                     final_list.append(current_video.copy())
-                    check_limit = datetime.strptime(current_video["date"],
+                    check_limit = datetime.strptime(current_video["viewed_at"],
                                                     "%Y-%m-%d %H:%M:%S").strftime("%m")
                     if int(check_limit) + limit < ref_month:
-                        api_response = str(sb_cli.table("tiktoks").upsert({"id": current_video["id"],
-                                                                           "viewed_at": current_video["date"]},
-                                                                          on_conflict="id").execute())
-
+                        api_response = str(sb_cli.table("tiktoks").upsert(final_list,
+                                                                          on_conflict="id",
+                                                                          ignore_duplicates=True).execute())
+                        watch_history_df = pd.DataFrame(columns=["id", "viewed_at"], data=final_list)
+                        dataframe_dict['watch_history'] = watch_history_df
                         break
                     current_video.clear()
     else:
         raise FileNotFoundError("This should not happen.")
-
     return "Finished sending all Tik Toks! " + api_response
 
 
