@@ -52,6 +52,7 @@ def home() -> typing.ResponseReturnValue:  # put application's code here
                             "shared": form.shared.data,
                             "favorites": form.favorites.data})
         print(parse_all_tts(tiktok_data, dataframe_dict, 5))
+        # dataframe_dict["watch_history"].to_csv('tmp.csv', index=False)
         find_hotspots(dataframe_dict["watch_history"])
     else:
         for field, errors in form.errors.items():
