@@ -2,7 +2,7 @@ from flask import Flask, render_template, typing, flash
 from flask_wtf import CSRFProtect
 import os
 import tt_data_collect
-from tt_parse_data import parse_all_tts
+import tt_parse_data as ttp
 from timeseries import find_hotspots
 import login_page
 from dotenv import load_dotenv
@@ -36,7 +36,7 @@ def login() -> typing.ResponseReturnValue:
         # try:
         # result = sb_cli.auth.sign_in_with_otp({"email": email})
         # print(result)
-        # except():e
+        # except():
         #     flash("Please wait a minute before requesting another magic link.", "error")
     return render_template("login.html", form=form)
 
@@ -51,7 +51,9 @@ def home() -> typing.ResponseReturnValue:  # put application's code here
                             "searched": form.searches.data,
                             "shared": form.shared.data,
                             "favorites": form.favorites.data})
-        print(parse_all_tts(tiktok_data, dataframe_dict, 5))
+        if tiktok_data["brows_hist"] is not None:
+            print(ttp.parse_brows_hist(tiktok_data["brows_hist"],
+                                       dataframe_dict, None))
         find_hotspots(dataframe_dict["watch_history"])
     else:
         for field, errors in form.errors.items():
