@@ -48,7 +48,7 @@ def home() -> typing.ResponseReturnValue:  # put application's code here
                             "searched": form.searches.data,
                             "shared": form.shared.data,
                             "favorites": form.favorites.data})
-        print(parse_all_tts(tiktok_data, 4))
+        print(parse_all_tts(tiktok_data, 5))
     else:
         for field, errors in form.errors.items():
             for error in errors:

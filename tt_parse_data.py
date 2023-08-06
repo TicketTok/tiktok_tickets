@@ -39,15 +39,17 @@ def parse_all_tts(entries: dict, limit: int) -> str:
                     check_limit = datetime.strptime(current_video["viewed_at"],
                                                     "%Y-%m-%d %H:%M:%S").strftime("%m")
                     if int(check_limit) + limit < ref_month:
-                        api_response = str(sb_cli.table("tiktoks").upsert(final_list,
-                                                                          on_conflict="id",
-                                                                          ignore_duplicates=True).execute())
+                        # api_response = str(sb_cli.table("tiktoks").upsert(final_list,
+                        #                                                   on_conflict="id",
+                        #                                                   ignore_duplicates=True).execute())
                         watch_history_df = pd.DataFrame(columns=["id", "viewed_at"], data=final_list)
+                        print(watch_history_df)
                         dataframe_dict['watch_history'] = watch_history_df
                         break
                     current_video.clear()
     else:
         raise FileNotFoundError("This should not happen.")
+
     return "Finished sending all Tik Toks! " + api_response
 
 
