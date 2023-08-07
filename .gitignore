@@ -2,3 +2,4 @@
 .flaskenv
 __pycache__/*
 tmp.csv
+.python-version

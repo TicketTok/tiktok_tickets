@@ -24,7 +24,10 @@ def find_hotspots(df: pd.DataFrame):
 
     top_50 = sessions.sort_values(
         by='session_length', ascending=False).head(50)
-    print(top_50[['min', 'session_length']])
+    video_counts = df.groupby('session_id').size()
+    top_50 = top_50.merge(video_counts.rename(
+        'num_videos'), left_index=True, right_index=True)
+    print(top_50[['min', 'num_videos', 'session_length']])
 
 
 if __name__ == '__main__':
