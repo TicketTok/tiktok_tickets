@@ -54,7 +54,11 @@ def home() -> typing.ResponseReturnValue:  # put application's code here
         if tiktok_data["brows_hist"] is not None:
             print(ttp.parse_brows_hist(tiktok_data["brows_hist"],
                                        dataframe_dict, None))
+        if tiktok_data["liked"] is not None:
+            print(ttp.parse_liked(tiktok_data["liked"],
+                                  dataframe_dict, None))
         find_hotspots(dataframe_dict["watch_history"])
+        print(dataframe_dict.keys())
     else:
         for field, errors in form.errors.items():
             for error in errors:
