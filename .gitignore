@@ -1,5 +1,2 @@
-.env
-.flaskenv
+.idea/*
 __pycache__/*
-tmp.csv
-.python-version
