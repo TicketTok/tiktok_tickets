@@ -2,10 +2,11 @@ from flask_wtf import FlaskForm
 from flask_wtf.file import FileRequired, FileAllowed, FileField
 from wtforms.validators import InputRequired, Length, Regexp
 
+# validators=[FileAllowed(["txt"], "Text Only!")]
 
 class TiktokForm(FlaskForm):
-    browsing = FileField('Browsing History File', validators=[FileAllowed(["txt"], "Text Only!")])
-    liked = FileField('Liked Videos', validators=[FileAllowed(["txt"], "Text Only!")])
-    searches = FileField('Searched Videos', validators=[FileAllowed("txt", "Text Only!")])
-    shared = FileField('Shared Videos', validators=[FileAllowed("txt", "Text Only!")])
-    favorites = FileField('Favorited Videos', validators=[FileAllowed("txt", "Text Only!")])
+    browsing = FileField('Browsing History File')
+    liked = FileField('Liked Videos')
+    searches = FileField('Searched Videos')
+    shared = FileField('Shared Videos')
+    favorites = FileField('Favorited Videos')

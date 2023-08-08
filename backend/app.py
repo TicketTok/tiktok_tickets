@@ -57,6 +57,12 @@ def home() -> typing.ResponseReturnValue:  # put application's code here
         if tiktok_data["liked"] is not None:
             print(ttp.parse_liked(tiktok_data["liked"],
                                   dataframe_dict, None))
+        if tiktok_data["searched"] is not None:
+            print(ttp.parse_searches(tiktok_data["searched"],
+                                     dataframe_dict, None))
+        if tiktok_data["shared"] is not None:
+            print(ttp.parse_shares(tiktok_data["shared"],
+                                   dataframe_dict, None))
         find_hotspots(dataframe_dict["watch_history"])
         print(dataframe_dict.keys())
     else:
