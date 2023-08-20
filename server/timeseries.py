@@ -6,17 +6,17 @@ HOTSPOT_AMOUNT = 50
 
 def find_hotspots(df: pd.DataFrame):
     # Switch to datetime fields
-    df['viewed_at'] = pd.to_datetime(df['viewed_at'])
+    df['date'] = pd.to_datetime(df['date'])
 
     # Find view sessions
-    df['time_diff'] = df['viewed_at'] - df['viewed_at'].shift(-1)
+    df['time_diff'] = df['date'] - df['date'].shift(-1)
     df['new_session'] = ((df['time_diff'].isna()) | (
         df['time_diff'] > pd.Timedelta(minutes=15))).astype(int)
     df['session_id'] = df['new_session'][::-1].cumsum()
     df = df.drop(columns=['time_diff', 'new_session'])
 
     # Find hotspots
-    sessions = df.groupby('session_id')['viewed_at'].agg(['min', 'max'])
+    sessions = df.groupby('session_id')['date'].agg(['min', 'max'])
     sessions['session_length'] = sessions['max'] - sessions['min']
     avg_len = sessions['session_length'].mean()
     print(f"total sessions: {sessions.shape[0]}")

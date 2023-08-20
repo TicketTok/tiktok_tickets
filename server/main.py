@@ -1,46 +1,65 @@
-# from typing import Annotated
-from fastapi import FastAPI, File, UploadFile, Request
-from timeseries import find_hotspots
-import tt_parse_data as ttp
+from fastapi import FastAPI, UploadFile
+import tiktok_data_parsers as parser
 
 app = FastAPI()
 
 
 @app.get("/")
 async def root():
-    return {"message": "Hello World"}
+    return {"message": "Server is running."}
 
 
 @app.post("/upload/")
 async def upload_files(
-    # request: Request,
-    browsing_history: UploadFile = File(None, alias="browsing-history"),
-    # like_history: UploadFile = File(None, alias="like-history"),
-    # search_history: UploadFile = File(None, alias="search-history"),
-    # share_history: UploadFile = File(None, alias="share-history"),
-    # favorite_history: UploadFile = File(None, alias="favorite-history"),
+    browsing_history: UploadFile,
+    like_history: UploadFile,
+    favorite_history: UploadFile,
+    comment_history: UploadFile,
+    search_history: UploadFile,
+    share_history: UploadFile,
 ):
-    print(browsing_history)
-    # data = dict()
-    # print(browsing_history)
-    # print(like_history)
-    # print(search_history)
-    # print(share_history)
-    # if browsing_history:
-    #     print("browsing history uploaded")
-    #     data["browsing"] = browsing_history
-    #     ttp.parse_brows_hist(browsing_history, data, None)
-    #     # find_hotspots(data["browsing"])
-    # # if like_history:
-    # #     data["liked"] = like_history
-    # #     ttp.parse_liked(like_history, data, None)
-    # # if search_history:
-    # #     data["searches"] = search_history
-    # #     ttp.parse_searches(search_history, data, None)
-    # # if share_history:
-    # #     data["shares"] = share_history
-    # #     ttp.parse_shares(share_history, data, None)
-    # # if favorite_history:
-    # #     data["favorites"] = favorite_history
-    # #     ttp.parse(browsing_history, data, None)
-    # return {"message": "Files uploaded"}
+    data = dict()
+    if browsing_history:
+        try:
+            data["browsing"] = await parser.parse_date_id(browsing_history)
+        except Exception as e:
+            print(f"Error occured parsing browsing history: {e}")
+        finally:
+            await browsing_history.close()
+    if like_history:
+        try:
+            data["liked"] = await parser.parse_date_id(like_history)
+        except Exception as e:
+            print(f"Error occured parsing like history: {e}")
+        finally:
+            await like_history.close()
+    if favorite_history:
+        try:
+            data["favorites"] = await parser.parse_date_id(favorite_history)
+        except Exception as e:
+            print(f"Error occured parsing favorite history: {e}")
+        finally:
+            await favorite_history.close()
+    if comment_history:
+        try:
+            data["comments"] = await parser.parse_comments(comment_history)
+        except Exception as e:
+            print(f"Error occured parsing comment history: {e}")
+        finally:
+            await comment_history.close()
+    if search_history:
+        try:
+            data["searches"] = await parser.parse_searches(search_history)
+        except Exception as e:
+            print(f"Error occured parsing comment history: {e}")
+        finally:
+            await comment_history.close()
+    if share_history:
+        try:
+            data["shares"] = await parser.parse_shares(share_history)
+        except Exception as e:
+            print(f"Error occured parsing comment history: {e}")
+        finally:
+            await comment_history.close()
+
+    return {"message": "Files uploaded"}
