@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { DataUploadForm } from "@/components/user-auth-form";
+import { DataUploadForm } from "@/components/data-upload-form";
 import { ModeToggle } from "@/components/ui/mode-toggle";
 
 export default function Home() {
