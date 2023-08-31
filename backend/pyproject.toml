@@ -2,7 +2,7 @@
 name = "tiktok-project"
 version = "0.1.0"
 description = ""
-authors = ["Your Name <ksharda@cmu.edu>"]
+authors = ["Kunal Sharda <ksharda@cmu.edu>", "Jayden Edara <aedara@uw.edu>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
@@ -15,7 +15,12 @@ python-dotenv = "^1.0.0"
 flask-wtf = "^1.1.1"
 pandas = "^2.0.1"
 supabase = "^1.0.3"
-tiktokapi = "^5.2.2"
+mypy = "^1.3.0"
+requests = "^2.31.0"
+email-validator = "^2.0.0.post2"
+fastapi = "^0.101.1"
+uvicorn = {extras = ["standard"], version = "^0.23.2"}
+python-multipart = "^0.0.6"
 
 
 [build-system]
