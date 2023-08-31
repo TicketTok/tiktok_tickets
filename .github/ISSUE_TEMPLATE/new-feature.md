@@ -8,7 +8,8 @@ assignees: ''
 ---
 
 # New Feature Proposal Template
-Provide a short single paragraph description for the feature. 
+Implement the following... :
+- [ ]
 
 ## Background
 Provide any additional background for the feature. I.e.: user scenarios, business value, etc.
