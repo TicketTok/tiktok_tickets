@@ -7,16 +7,28 @@ import { upload } from "@/lib/http";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { parseFile, processDataForD3 } from "@/utils/data-parse";
 
-interface DataUploadFormProps extends React.HTMLAttributes<HTMLDivElement> {}
+interface DataUploadFormProps extends React.HTMLAttributes<HTMLDivElement> {
+  onProcessedData: (data: any) => void;
+}
 
-export function DataUploadForm({ className, ...props }: DataUploadFormProps) {
+export function DataUploadForm({ onProcessedData, className, ...props }: DataUploadFormProps) {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
+
+  const handleFileProcessing = async (file: File) => {
+    try {
+        const fileContent = await parseFile(file);
+        const formattedData = processDataForD3(fileContent);
+        onProcessedData(formattedData);
+    } catch (error) {
+        console.error("Error processing file:", error);
+    }
+};
 
   const onSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     setIsLoading(true);
-
     const browsingHistory = (
       document.getElementById("browsing") as HTMLInputElement
     ).files![0];
@@ -35,6 +47,21 @@ export function DataUploadForm({ className, ...props }: DataUploadFormProps) {
       .files![0];
 
     try {
+      const historyFiles = [
+        browsingHistory,
+        likeHistory,
+        favoriteHistory,
+        commentHistory,
+        searchHistory,
+        shareHistory,
+      ];
+
+      for (const file of historyFiles) {
+        if (file) {
+          await handleFileProcessing(file);
+        }
+      }
+
       const response = await upload(
         browsingHistory,
         likeHistory,
