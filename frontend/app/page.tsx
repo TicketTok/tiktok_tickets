@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import React, { useState } from 'react';
 import { DataUploadForm } from "@/components/data-upload-form";
@@ -8,7 +10,7 @@ export default function Home() {
   const [visualizationData, setVisualizationData] = useState(null);
 
   // Function to handle data from DataUploadForm
-  const handleProcessedData = (data : any) => {
+  const handleProcessedData = (data: any) => {
     setVisualizationData(data);
   };
 
@@ -27,7 +29,7 @@ export default function Home() {
               Don&apos;t have your data? Learn how to get it here.
             </p>
           </div>
-          <DataUploadForm onProcessedData = {handleProcessedData}/>
+          <DataUploadForm onProcessedData={handleProcessedData} />
         </div>
       </div>
     </>
