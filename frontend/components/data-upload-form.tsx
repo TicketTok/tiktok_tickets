@@ -23,6 +23,7 @@ interface DataUploadFormProps extends React.HTMLAttributes<HTMLDivElement> {
  */
 export function DataUploadForm({ onProcessedData, className, ...props }: DataUploadFormProps) {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const allParsedData : any = {};
 
   const handleFileProcessing = async (file: File, fileType: string) => {
     try {
@@ -31,26 +32,32 @@ export function DataUploadForm({ onProcessedData, className, ...props }: DataUpl
       switch (fileType) {
         case 'browsing':
           parsedData = parseDateId(fileContent as string);
+          console.log("Browsing data:", parsedData);
+          break;
         case 'like':
           parsedData = parseDateId(fileContent as string);
+          console.log("Like data:", parsedData);
           break;
         case 'favorite':
           parsedData = parseDateId(fileContent as string);
+          console.log("Favorite data:", parsedData);
           break;
         case 'comment':
           parsedData = parseComments(fileContent as string);
+          console.log("Comment data:", parsedData);
           break;
         case 'search':
           parsedData = parseSearches(fileContent as string);
+          console.log("Search data:", parsedData);  
           break;
         case 'share':
           parsedData = parseShares(fileContent as string);
+          console.log("Share data:", parsedData);
           break;
         default:
           throw new Error("Unknown file type");
       }
-      console.log("Parsed data:", parsedData);
-      onProcessedData(parsedData);
+      allParsedData[fileType] = parsedData;
     } catch (error) {
       console.error("Error processing file:", error);
     }
@@ -99,6 +106,7 @@ export function DataUploadForm({ onProcessedData, className, ...props }: DataUpl
         }
       }
 
+      onProcessedData(allParsedData);
       // const response = await upload(
       //   browsingHistory,
       //   likeHistory,
