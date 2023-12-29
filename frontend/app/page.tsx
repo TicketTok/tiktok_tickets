@@ -12,6 +12,7 @@ export default function Home() {
   // Function to handle data from DataUploadForm
   const handleProcessedData = (data: any) => {
     setVisualizationData(data);
+    console.log("Data from DataUploadForm:", data);
   };
 
   return (

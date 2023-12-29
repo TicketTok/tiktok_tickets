@@ -30,7 +30,10 @@ export function DataUploadForm({ onProcessedData, className, ...props }: DataUpl
       let parsedData;
       switch (fileType) {
         case 'browsing':
+          parsedData = parseDateId(fileContent as string);
         case 'like':
+          parsedData = parseDateId(fileContent as string);
+          break;
         case 'favorite':
           parsedData = parseDateId(fileContent as string);
           break;
@@ -46,6 +49,7 @@ export function DataUploadForm({ onProcessedData, className, ...props }: DataUpl
         default:
           throw new Error("Unknown file type");
       }
+      console.log("Parsed data:", parsedData);
       onProcessedData(parsedData);
     } catch (error) {
       console.error("Error processing file:", error);
@@ -95,15 +99,15 @@ export function DataUploadForm({ onProcessedData, className, ...props }: DataUpl
         }
       }
 
-      const response = await upload(
-        browsingHistory,
-        likeHistory,
-        favoriteHistory,
-        commentHistory,
-        searchHistory,
-        shareHistory
-      );
-      console.log("Upload successful:", response);
+      // const response = await upload(
+      //   browsingHistory,
+      //   likeHistory,
+      //   favoriteHistory,
+      //   commentHistory,
+      //   searchHistory,
+      //   shareHistory
+      // );
+      // console.log("Upload successful:", response);
     } catch (error) {
       console.error("An error occurred:", error);
     } finally {
