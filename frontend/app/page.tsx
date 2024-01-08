@@ -1,8 +1,17 @@
 import Link from "next/link";
+import React, { useState } from 'react';
 import { DataUploadForm } from "@/components/data-upload-form";
 import { ModeToggle } from "@/components/ui/mode-toggle";
+// import { parseFile } from "@/utils/data-parse";
 
 export default function Home() {
+  const [visualizationData, setVisualizationData] = useState(null);
+
+  // Function to handle data from DataUploadForm
+  const handleProcessedData = (data : any) => {
+    setVisualizationData(data);
+  };
+
   return (
     <>
       <div className="container relative hidden h-screen flex-col items-center justify-center md:grid lg:max-w-none lg:px-0">
@@ -18,7 +27,7 @@ export default function Home() {
               Don&apos;t have your data? Learn how to get it here.
             </p>
           </div>
-          <DataUploadForm />
+          <DataUploadForm onProcessedData = {handleProcessedData}/>
         </div>
       </div>
     </>
